@@ -43,7 +43,7 @@ if (most == 'dev'):
         # Crawling data for each category
         for i in range(0, len(uniqueItemInCategory)):
             category_link = HOME_PAGE + uniqueItemInCategory[i]
-            print("Crawling data from "+category_link+" :["+i+"/"+len(uniqueItemInCategory)+"]\n")
+            print("Crawling data from "+category_link+" :["+str(i+1)+"/"+str(len(uniqueItemInCategory))+"]\n")
             internal_links = get_internal_urls(category_link)
             categories_data[category_link] = internal_links
 
