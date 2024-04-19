@@ -1,3 +1,6 @@
+import requests
+from bs4 import BeautifulSoup
+from urllib.parse import urljoin
 def getAllATags(tag, aTags): 
     for childTag in tag.keys():
         if type(tag[childTag]) is dict:
@@ -27,5 +30,26 @@ def classify(aTags):
                     classified[parts[1]] = []
                 classified[parts[1]].append(aTags[i])
     return classified
+
+
+def get_internal_urls(url):
+    try:
+        response = requests.get(url)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        internal_urls = set()
+
+        # Only get data from right side
+        div_list_sp_col_right = soup.find('div', id='list_sp_col_right')
+        if div_list_sp_col_right:
+            for link in div_list_sp_col_right.find_all('a'):
+                href = link.get('href')
+                if href and "san-pham/" in href:
+                    internal_url = urljoin(url, href)
+                    internal_urls.add(internal_url)
+
+        return list(internal_urls)
+    except Exception as e:
+        print(f"Error fetching URLs: {e}")
+        return []
 
 
